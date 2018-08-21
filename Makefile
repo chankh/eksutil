@@ -36,7 +36,10 @@ ifeq ($(WORKDIR),$(CURDIR))
 	WORKDIR = /tmp
 endif
 
-all: build pack 
+all: dep build pack 
+
+dep:
+	@dep ensure
 
 build:
 	@GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags='-w -s' -o $(HANDLER)
@@ -47,4 +50,4 @@ pack:
 clean:
 	@rm -rf $(HANDLER) $(PACKAGE).zip
 
-.PHONY: all build pack clean
+.PHONY: all dep build pack clean
