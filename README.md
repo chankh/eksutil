@@ -14,6 +14,21 @@ manage and modify deployments and other controls within the Amazon EKS cluster.
 While this is just a sample that list the pods running within the Amazon EKS cluster, you can
 modify the code to meet yourneeds.
 
+Ensure that you have installed `dep`
+--------------------------------------
+
+On MacOS you can install or upgrade to the latest released version with Homebrew:
+
+$ brew install dep
+$ brew upgrade dep
+
+On other platforms you can use the install.sh script:
+
+$ curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+
+Build 
+------
+
 Setting this up is rather easy. Build the function using the `make` command.
 
 ```
