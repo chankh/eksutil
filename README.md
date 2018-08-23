@@ -1,5 +1,4 @@
 # Lambda Lambda Sample
-=======
 
 This code repository aims to be a reference sample for implementing AWS Lambda function to interact
 with Amazon Elastic Container Services for Kubernetes (EKS) using Kubernetes API. Amazon EKS runs
@@ -12,7 +11,15 @@ Having a AWS Lambda function that integrates with Amazon EKS would allow event-d
 manage and modify deployments and other controls within the Amazon EKS cluster.
 
 While this is just a sample that list the pods running within the Amazon EKS cluster, you can
-modify the code to meet yourneeds.
+modify the code to meet your needs.
+
+## Prequisites
+
+This sample requires the `go` compiler and `dep` to build. Refer to this [Getting Started
+Guide](https://golang.org/doc/install) and [installing
+dep](https://golang.github.io/dep/docs/installation.html) for detailed instructions.
+
+## Building
 
 Setting this up is rather easy. Build the function using the `make` command.
 
@@ -20,8 +27,11 @@ Setting this up is rather easy. Build the function using the `make` command.
 $ make
 ```
 
-This creates a zip package of the function which can be deployed to AWS Lambda. There are few
-environment variables that will configure how this function works.
+This creates a zip package of the function which can be deployed to AWS Lambda. 
+
+## Configuration
+
+There are few environment variables that will configure how this function works.
 
 Variable Name | Description
 --------------|------------
@@ -55,6 +65,22 @@ data:
       groups:
         - system:masters
 ```
+
+For your Lambda execution role, you will need permissions to describe EKS cluster. Add the following
+statement to the IAM role.
+
+```
+{
+    "Effect": "Allow",
+    "Action": [
+        "eks:DescribeCluster"
+    ],
+    "Resource": "*"
+}
+```
+
+You may want to be more restrictive by specifying only the arn of your EKS cluster for resource
+field.
 
 Once these are configured, you can test your function. Good luck!
 

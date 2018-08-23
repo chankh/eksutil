@@ -39,15 +39,19 @@ endif
 all: dep build pack 
 
 dep:
+	@echo "Checking dependencies..."
 	@dep ensure
 
 build:
+	@echo "Building..."
 	@GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags='-w -s' -o $(HANDLER)
 
 pack:
+	@echo "Packing binary..."
 	@zip $(PACKAGE).zip $(HANDLER)
 
 clean:
+	@echo "Cleaning up..."
 	@rm -rf $(HANDLER) $(PACKAGE).zip
 
 .PHONY: all dep build pack clean
