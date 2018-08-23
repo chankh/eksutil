@@ -21,6 +21,21 @@ dep](https://golang.github.io/dep/docs/installation.html) for detailed instructi
 
 ## Building
 
+Ensure that you have installed `dep`
+--------------------------------------
+
+On MacOS you can install or upgrade to the latest released version with Homebrew:
+
+$ brew install dep
+$ brew upgrade dep
+
+On other platforms you can use the install.sh script:
+
+$ curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+
+Build 
+------
+
 Setting this up is rather easy. Build the function using the `make` command.
 
 ```
