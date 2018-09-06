@@ -1,4 +1,4 @@
-# Lambda Lambda Sample
+# EKS Lambda Sample
 
 This code repository aims to be a reference sample for implementing AWS Lambda function to interact
 with Amazon Elastic Container Services for Kubernetes (EKS) using Kubernetes API. Amazon EKS runs
