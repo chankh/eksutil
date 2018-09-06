@@ -26,7 +26,7 @@
 #
 
 HANDLER ?= main
-PACKAGE ?= $(HANDLER)
+PACKAGE ?= listpods
 GOPATH  ?= $(HOME)/go
 GOOS    ?= linux
 GOARCH  ?= amd64

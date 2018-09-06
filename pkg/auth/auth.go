@@ -1,11 +1,8 @@
-package main
+package auth
 
 import (
-	"context"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
@@ -13,10 +10,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/credentials/stscreds"
@@ -29,58 +22,32 @@ import (
 	clientset "k8s.io/client-go/kubernetes"
 )
 
-func main() {
-	if os.Getenv("ENV") != "PRODUCTION" {
-		log.SetLevel(log.DebugLevel)
+// NewAuthClient creates a new EKS authenticated clientset.
+func NewAuthClient(config *ClusterConfig) (*clientset.Clientset, error) {
+	if config.ClusterName == "" {
+		errors.New("ClusterName cannot be empty")
 	}
 
-	lambda.Start(handler)
-}
-
-func handler(context context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	// Start a new AWS session
-	s := newSession()
-
-	// Setup the basic EKS cluster info
-	cfg := &ClusterConfig{
-		ClusterName: os.Getenv("CLUSTER_NAME"),
-		Session:     s,
+	// Start new AWS session if not specified
+	if config.Session == nil {
+		config.Session = newSession()
 	}
 
 	// Load the rest from AWS using SDK
-	cfg.loadConfig()
+	config.loadConfig()
 
 	// Create the Kubernetes client
-	client, err := cfg.NewClientConfig()
+	client, err := config.NewClientConfig()
 	if err != nil {
-		log.WithError(err).Fatal(err.Error())
+		return nil, errors.Wrap(err, "Unable to create Kubernetes Client Config")
 	}
 
 	clientset, err := client.NewClientSetWithEmbeddedToken()
 	if err != nil {
-		log.WithError(err).Fatal(err.Error())
+		return nil, errors.Wrap(err, "Unable to create Kubernetes Client Set")
 	}
 
-	// Call Kubernetes API here
-	pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
-	if err != nil {
-		log.WithError(err).Fatal("Error listing pods")
-	}
-
-	var results []string
-
-	for i, pod := range pods.Items {
-		log.Infof("[%d] %s", i, pod.Name)
-		results = append(results, pod.Name)
-	}
-
-	json, err := json.Marshal(results)
-	if err != nil {
-		log.WithError(err).Fatal("Unable to marshal results to json")
-
-	}
-
-	return events.APIGatewayProxyResponse{Body: string(json), StatusCode: 200}, nil
+	return clientset, nil
 }
 
 // Retrieve EKS cluster endpoint and CA from AWS
@@ -130,7 +97,7 @@ func (c *ClusterConfig) NewClientConfig() (*ClientConfig, error) {
 		Client: &clientcmdapi.Config{
 			Clusters: map[string]*clientcmdapi.Cluster{
 				c.ClusterName: {
-					Server: c.MasterEndpoint,
+					Server:                   c.MasterEndpoint,
 					CertificateAuthorityData: data,
 				},
 			},

@@ -9,7 +9,7 @@ Resources:
   ThumbnailFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
-      CodeUri: fileb://main.zip
+      CodeUri: fileb://listpods.zip
       Handler: main
       Runtime: go1.x
       Timeout: 3000

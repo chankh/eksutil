@@ -24,6 +24,7 @@ dep](https://golang.github.io/dep/docs/installation.html) for detailed instructi
 Setting this up is rather easy. Build the function using the `make` command.
 
 ```
+$ cd lambda/listpods
 $ make
 ```
 
