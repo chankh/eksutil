@@ -25,6 +25,9 @@ dep](https://golang.github.io/dep/docs/installation.html) for detailed instructi
   an Amazon EKS cluster.
 * [codepipeline](./lambda/codepipeline) - Demonstration of Continuous Deployment using AWS
   CodePipeline to deploy an application to an Amazon EKS cluster.
+* [drainer](https://github.com/pahud/eks-lambda-drainer) - Amazon EKS node drainer with AWS Lambda
+  that respond to Spot Termination signal from AWS CloudWatch events and perform taint-based
+  eviction on the terminating node.
 
 ## Configuring RBAC
 
