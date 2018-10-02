@@ -19,25 +19,14 @@ This sample requires the `go` compiler and `dep` to build. Refer to this [Gettin
 Guide](https://golang.org/doc/install) and [installing
 dep](https://golang.github.io/dep/docs/installation.html) for detailed instructions.
 
-## Building
+## List of Samples
 
-Setting this up is rather easy. Build the function using the `make` command.
+* [listpods](./lambda/listpods) - Most basic example of using this utility to list pods running in
+  an Amazon EKS cluster.
+* [codepipeline](./lambda/codepipeline) - Demonstration of Continuous Deployment using AWS
+  CodePipeline to deploy an application to an Amazon EKS cluster.
 
-```
-$ cd lambda/listpods
-$ make
-```
-
-This creates a zip package of the function which can be deployed to AWS Lambda. 
-
-## Configuration
-
-There are few environment variables that will configure how this function works.
-
-Variable Name | Description
---------------|------------
-CLUSTER_NAME | Name of the Amazon EKS cluster.
-ENV | (Optional) Setting this variable to `PRODUCTION` controls the level of log output.
+## Configuring RBAC
 
 You would also need to give the Lambda execution role permissions in Amazon EKS cluster. Refer to
 this [User Guide](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html) for detailed

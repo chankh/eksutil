@@ -24,10 +24,6 @@ import (
 
 // NewAuthClient creates a new EKS authenticated clientset.
 func NewAuthClient(config *ClusterConfig) (*clientset.Clientset, error) {
-	if config.ClusterName == "" {
-		errors.New("ClusterName cannot be empty")
-	}
-
 	// Start new AWS session if not specified
 	if config.Session == nil {
 		config.Session = newSession()
@@ -52,6 +48,10 @@ func NewAuthClient(config *ClusterConfig) (*clientset.Clientset, error) {
 
 // Retrieve EKS cluster endpoint and CA from AWS
 func (c *ClusterConfig) loadConfig() {
+	if c.ClusterName == "" {
+		errors.New("ClusterName cannot be empty")
+	}
+
 	svc := eks.New(c.Session)
 	input := &eks.DescribeClusterInput{
 		Name: aws.String(c.ClusterName),
