@@ -18,7 +18,7 @@ There are few environment variables that will configure how this function works.
 Variable Name | Description
 --------------|------------
 CLUSTER_NAME | Name of the Amazon EKS cluster.
-ENV | (Optional) Setting this variable to `PRODUCTION` controls the level of log output.
+ENV | (Optional) Setting this variable to `DEBUG` to enable debug log output.
 
 You would also need to give the Lambda execution role permissions in Amazon EKS cluster. Refer to
 this [User Guide](https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html) for detailed

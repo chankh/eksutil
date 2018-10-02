@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	if os.Getenv("ENV") != "PRODUCTION" {
+	if os.Getenv("ENV") == "DEBUG" {
 		log.SetLevel(log.DebugLevel)
 	}
 
