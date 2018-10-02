@@ -1,4 +1,4 @@
-# Listing Pods Sample
+# Continuous Deployment Sample using AWS CodePipeline
 
 ## Building
 
