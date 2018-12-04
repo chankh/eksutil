@@ -187,7 +187,7 @@ func (c *ClientConfig) WithEmbeddedToken() (*ClientConfig, error) {
 	}
 
 	x := c.Client.AuthInfos[c.ContextName]
-	x.Token = tok
+	x.Token = tok.Token
 
 	log.WithField("token", tok).Debug("Successfully generated token")
 	return &clientConfigCopy, nil
