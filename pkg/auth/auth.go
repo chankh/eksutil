@@ -176,7 +176,7 @@ func (c *ClientConfig) WithEmbeddedToken() (*ClientConfig, error) {
 
 	log.Info("Generating token")
 
-	gen, err := token.NewGenerator()
+	gen, err := token.NewGenerator(c.ClusterName)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not get token generator")
 	}
