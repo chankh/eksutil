@@ -30,7 +30,10 @@ func NewAuthClient(config *ClusterConfig) (*clientset.Clientset, error) {
 	}
 
 	// Load the rest from AWS using SDK
-	config.loadConfig()
+	err := config.loadConfig()
+	if err != nil {
+		return nil, errors.Wrap(err, "Unable to load Kubernetes Client Config")
+	}
 
 	// Create the Kubernetes client
 	client, err := config.NewClientConfig()
@@ -47,7 +50,7 @@ func NewAuthClient(config *ClusterConfig) (*clientset.Clientset, error) {
 }
 
 // Retrieve EKS cluster endpoint and CA from AWS
-func (c *ClusterConfig) loadConfig() {
+func (c *ClusterConfig) loadConfig() error {
 	if c.ClusterName == "" {
 		errors.New("ClusterName cannot be empty")
 	}
@@ -62,11 +65,11 @@ func (c *ClusterConfig) loadConfig() {
 	result, err := svc.DescribeCluster(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
-			errors.Wrap(err, aerr.Error())
+			return errors.Wrap(err, aerr.Error())
 		} else {
 			// Print the error, cast err to awserr.Error to get the Code and
 			// Message from an error.
-			errors.Wrap(err, err.Error())
+			return errors.Wrap(err, err.Error())
 		}
 	}
 
@@ -75,6 +78,7 @@ func (c *ClusterConfig) loadConfig() {
 
 	c.MasterEndpoint = *result.Cluster.Endpoint
 	c.CertificateAuthorityData = *result.Cluster.CertificateAuthority.Data
+	return nil
 }
 
 func (c *ClusterConfig) NewClientConfig() (*ClientConfig, error) {
