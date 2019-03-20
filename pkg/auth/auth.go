@@ -65,10 +65,12 @@ func (c *ClusterConfig) loadConfig() error {
 	result, err := svc.DescribeCluster(input)
 	if err != nil {
 		if aerr, ok := err.(awserr.Error); ok {
+			log.WithField("cluster", c.ClusterName).Error(aerr.Error())
 			return errors.Wrap(err, aerr.Error())
 		} else {
 			// Print the error, cast err to awserr.Error to get the Code and
 			// Message from an error.
+			log.WithField("cluster", c.ClusterName).Error(err.Error())
 			return errors.Wrap(err, err.Error())
 		}
 	}
