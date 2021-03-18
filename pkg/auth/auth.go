@@ -182,7 +182,7 @@ func (c *ClientConfig) WithEmbeddedToken() (*ClientConfig, error) {
 
 	log.Info("Generating token")
 
-	gen, err := token.NewGenerator()
+	gen, err := token.NewGenerator(true)
 	if err != nil {
 		return nil, errors.Wrap(err, "could not get token generator")
 	}
@@ -193,7 +193,7 @@ func (c *ClientConfig) WithEmbeddedToken() (*ClientConfig, error) {
 	}
 
 	x := c.Client.AuthInfos[c.ContextName]
-	x.Token = tok
+	x.Token = tok.Token
 
 	log.WithField("token", tok).Debug("Successfully generated token")
 	return &clientConfigCopy, nil
